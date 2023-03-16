@@ -1,0 +1,134 @@
+
+
+1) Qual o motivo de utilizar um vetor de acesso circular na implementação de uma fila estática?
+
+O motivo é o reaproveitamento de memória, pois caso algum elemento seja removido na lista, 
+independente de sua posição, o próximo elemento adcionado ocupará a posição vazia, 
+aproveitando todo o espaço da lista.
+
+ check:<<<erro: sua explicação precisa ser melhorada, não responde ao questionamento de forma clara>>>>
+ check:<<<erro: tem várias formas de implementar o que foi relatado aqui. No entanto, faltou abordar a questão do tempo computacional que essa abordagem proporciona>>>>
+
+2) Uma das utilidades das listas circulares dinâmicas é a possibilidade de percorrer todos os elementos por diversas vezes em um loop. 
+Modifique o TAD para incluir uma função que retornará sempre o próximo elemento. 
+Por exemplo, se a lista não foi percorrida ainda, o próximo elemento é a cabeça. 
+Depois, ao chamar a função novamente, será devolvido o segundo elemento, e assim sucessivamente.
+
+(a) mostrar como fica a estrutura do TAD
+
+struct circlist{
+        CList_node *end;
+        CList_node *atual; // *atual sempre começa no end da lista
+};
+
+struct clistnode{
+    struct aluno dado; //por exemplo uma lista de alunos
+    CList_node *prox;
+};
+
+
+(b) mostrar a função que retorna o próximo elemento
+*Não é necessário mostrar as outras funções afetadas pela modificação proposta
+
+int return_circ(circlist *list, struct aluno *al){
+
+    if(list == NULL)
+    {
+        return -1;
+    }
+    else
+    { check:<<<erro: faltou testar lista vazia>>>>
+        (*al) = list->atual->dado;
+        list->atual = list->atual->prox;
+        return 0;      
+    }
+}
+
+3)
+Crie uma função que faz a junção de duas strings. 
+A função deve ter como entrada as duas strings e a string resultante da junção. 
+A alocação de espaço necessário para a string concatenada deve ser feita dentro da função. 
+A função deve retornar um valor inteiro: (0 - zero) se a junção ocorreu de forma corretam; (-1) em caso de erro. 
+Mostre o uso da função no programa principal. 
+Não é permitido criar novos tipos de dados para a solução do exercício (ou seja, sem uso de structs).
+
+Digite a string 1: Oi,
+Digite a string 2: Como vai?
+
+Texto concatenado: Oi, Como vai?
+ check:<<<erro: a string resultante deveria ser passada como ponteiro de ponteiro para char>>>>
+int junta_string(char *s1, char *s2, char *sresult){
+
+    int tam1 = 0, tam2 = 0;
+
+    tam1 = srlen(s1);
+    tam2 = srlen(s2);
+
+    sresult = malloc(tam1*tam2*sizeof(char)); check:<<<erro: faltou espaço para o \0>>>>
+
+    if(sresult == NULL)
+    {
+        rerturn -1;
+    }
+    else
+    {
+        for(int i = 0, i<tam1, i++)
+        {
+            sresult[i] = s1[i];
+        }
+
+        int c = tam1 + 1;  check:<<<erro: não precisa do -1>>>>
+        (*sresult[c]) = ' '; check:<<<erro: não tem necessidade desse desreferenciamento>>>>
+        c++;
+
+        for(int k = 0, i<tam2, k++)
+        {
+            (*sresult[c]) = s1[k];
+            c++;
+        }
+
+        return 0
+    }
+}
+
+// na main:
+
+int r;
+char *sresult;
+char s1[4] = "Bom";
+char s2[4] = "dia";
+
+r = junta_string(s1,s2,sresult);
+
+if(r == 0)
+{
+    printf("A string eh: %s\n",sresult);
+    // Bom dia
+}
+else
+{
+    printf("Erro\n");
+}
+
+
+4)Mostre como uma pilha pode ser usada para resolver a expressão matemática abaixo
+
+Cada número e operador é lido em um passo. Para cada passo, mostre o estado da pilha 
+Exemplo de como mostrar a pilha 
+2 2 <topo  // o número 2 está no topo
+2 3 4 <topo // o número 4 está no topo
+
+Expressão: 
+
+2 -7 5 - * 2 +
+
+2 <topo  // o numero 2 esta no topo
+2 -7 <topo  // o numero -7 esta no topo
+2 -7 5 <topo  // o numero 5 esta no topo
+2 -7 5 - <topo  // o simbolo '-' esta no topo check:<<<erro: ele não entre na pilha>>>>
+2 12 <topo  // a subtração de 5 e -7 esta no topo
+2 12 * <topo  // o sismbolo '*' esta no topo
+24 <topo  // a multiplicação entre 12 e 2 esta no topo
+24 2 <topo  // o numero 2 esta no topo
+24 2 + <topo  // o sismbolo '+' esta no topo
+26 <topo  // a soma entre 24 e 2 esta no topo
